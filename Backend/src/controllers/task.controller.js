@@ -4,6 +4,13 @@ import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
 import { asynchandler } from "../utils/asynchandler";
 
+const alltask = asynchandler(async (req, res) => {
+  const tasklist = await task.find({ owner: req.user?._id });
+  return res
+    .status(200)
+    .json(new ApiResponse(200, tasklist, "fetched all task"));
+});
+
 const addtask = asynchandler(async (req, res) => {
   const { title, description } = req.body;
   if (!title.trim()) {
@@ -40,3 +47,31 @@ const deletedtask = asynchandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, delete_task, "task delted successfully"));
 });
+
+const updatetask = asynchandler(async (req, res) => {
+  const { title, description } = req.body;
+  if (!(title || description)) {
+    throw new ApiError(400, "title and description is required");
+  }
+
+  const findtask = await task.findById(req.params.taskid);
+  if (!findtask) {
+    throw new ApiError(400, "taks with such id doesnot exists");
+  }
+  if (findtask.owner !== req.user._id) {
+    throw new ApiError(400, "you can't edit other's tasks");
+  }
+  const updateObject = {};
+  if (title) updateObject.title = title;
+  if (description) updateObject.description = description;
+  const update = await task.findByIdAndUpdate(req.user._id, updateObject, {
+    new: true,
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, update, "update successfully"));
+});
+
+
+export {alltask,updatetask,addtask,deletedtask}

@@ -119,9 +119,10 @@ const Logout = asynchandler(async (req, res) => {
     secure: true,
   };
   return res
-  .status(200)
-  .clearCookie("accessToken", options)
-  .clearCookie("refreshToken", options)
-  .json(new ApiResponse(200, {}, "LoggedOut SuccessFully"));
-
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "LoggedOut SuccessFully"));
 });
+
+export { Login, Logout, registeruser };
