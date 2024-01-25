@@ -3,8 +3,8 @@ import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
 import { asynchandler } from "../utils/asynchandler";
 
-const generateAccessandrefreshToken=async (id)=>{
-try {
+const generateAccessandrefreshToken = async (id) => {
+  try {
     const User = await user.findById(userid);
     const accesstoken = User.generateAccessToken();
     const refreshtoken = User.generateRefreshToken();
@@ -12,13 +12,13 @@ try {
     await User.save({ validateBeforeSave: false });
 
     return { accesstoken, refreshtoken };
-} catch (error) {
+  } catch (error) {
     throw new ApiError(
-        500,
-        "Something Went Wrong in Generating Access/Refresh Token"
-      );
-}
-}
+      500,
+      "Something Went Wrong in Generating Access/Refresh Token"
+    );
+  }
+};
 const registeruser = asynchandler(async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -72,5 +72,56 @@ const Login = asynchandler(async (req, res) => {
     throw new ApiError(400, "user credential not valid");
   }
 
-  const {accesstoken,refreshtoken}= await generateAccessandrefreshToken(finduser?._id);
+  const { accesstoken, refreshtoken } = await generateAccessandrefreshToken(
+    finduser?._id
+  );
+
+  const loggeduser = await user
+    .findById(finduser._id)
+    .select("-password -refreshtoken");
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+  return res
+    .status(200)
+    .cookie("accessToken", accesstoken, options)
+    .cookie("refreshToken", refreshtoken, options)
+    .json(
+      new ApiResponse(
+        200,
+        {
+          user: loggeduser,
+          accesstoken,
+          refreshtoken,
+        },
+        "User Logged In Successfully"
+      )
+    );
+});
+
+const Logout = asynchandler(async (req, res) => {
+  await user.findByIdAndUpdate(
+    req.user._id,
+    {
+      $unset: {
+        refreshtoken: 1,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+  return res
+  .status(200)
+  .clearCookie("accessToken", options)
+  .clearCookie("refreshToken", options)
+  .json(new ApiResponse(200, {}, "LoggedOut SuccessFully"));
+
 });
