@@ -1,11 +1,11 @@
-import { user } from "../models/user.model";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import { asynchandler } from "../utils/asynchandler";
+import { user } from "../models/user.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asynchandler } from "../utils/asynchandler.js";
 
 const generateAccessandrefreshToken = async (id) => {
   try {
-    const User = await user.findById(userid);
+    const User = await user.findById(id);
     const accesstoken = User.generateAccessToken();
     const refreshtoken = User.generateRefreshToken();
     User.refreshtoken = refreshtoken;
@@ -55,7 +55,7 @@ const registeruser = asynchandler(async (req, res) => {
 const Login = asynchandler(async (req, res) => {
   const { email, username, password } = req.body;
 
-  if (!email || !username) {
+  if (!(email || username)) {
     throw new ApiError(400, "please Provide either email or username");
   }
 
@@ -66,7 +66,7 @@ const Login = asynchandler(async (req, res) => {
     throw new ApiError(400, "user not found ");
   }
 
-  const isuservalid = await user.isPasswordCorrect(password);
+  const isuservalid = await finduser.isPasswordCorrect(password);
 
   if (!isuservalid) {
     throw new ApiError(400, "user credential not valid");
@@ -103,7 +103,7 @@ const Login = asynchandler(async (req, res) => {
 
 const Logout = asynchandler(async (req, res) => {
   await user.findByIdAndUpdate(
-    req.user._id,
+    req.user?._id,
     {
       $unset: {
         refreshtoken: 1,

@@ -1,1 +1,1 @@
-export const name = "Task_Manager";
+export const name = "Task";

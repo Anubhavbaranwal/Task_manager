@@ -1,8 +1,8 @@
 import { isValidObjectId } from "mongoose";
-import { task } from "../models/task.model";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import { asynchandler } from "../utils/asynchandler";
+import { task } from "../models/task.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asynchandler } from "../utils/asynchandler.js";
 
 const alltask = asynchandler(async (req, res) => {
   const tasklist = await task.find({ owner: req.user?._id });
@@ -38,6 +38,10 @@ const deletedtask = asynchandler(async (req, res) => {
   if (!isValidObjectId(taskid)) {
     throw new ApiError(400, "task id not valid");
   }
+  const findetask = await task.findById(taskid);
+  if (!findetask) {
+    throw new ApiError(400, "can't find the task please provide correct id");
+  }
 
   const delete_task = await task.findByIdAndDelete(taskid);
   if (!delete_task) {
@@ -45,7 +49,7 @@ const deletedtask = asynchandler(async (req, res) => {
   }
   return res
     .status(200)
-    .json(new ApiResponse(200, delete_task, "task delted successfully"));
+    .json(new ApiResponse(200, {}, "task delted successfully"));
 });
 
 const updatetask = asynchandler(async (req, res) => {
@@ -58,20 +62,24 @@ const updatetask = asynchandler(async (req, res) => {
   if (!findtask) {
     throw new ApiError(400, "taks with such id doesnot exists");
   }
-  if (findtask.owner !== req.user._id) {
-    throw new ApiError(400, "you can't edit other's tasks");
+  if (!findtask.owner.equals(req.user._id)) {
+    // console.log(findtask.owner, req.user._id);
+    throw new ApiError(403, "you can't edit other's tasks");
   }
   const updateObject = {};
   if (title) updateObject.title = title;
   if (description) updateObject.description = description;
-  const update = await task.findByIdAndUpdate(req.user._id, updateObject, {
+  const update = await task.findByIdAndUpdate(req.params.taskid, updateObject, {
     new: true,
   });
+  const findupdate = await task.findById(update._id);
+  if (!findupdate) {
+    throw new ApiError(403, "something went wrong while updating the the task");
+  }
 
   return res
     .status(200)
-    .json(new ApiResponse(200, update, "update successfully"));
+    .json(new ApiResponse(200, findupdate, "update successfully"));
 });
 
-
-export {alltask,updatetask,addtask,deletedtask}
+export { alltask, updatetask, addtask, deletedtask };
