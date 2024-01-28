@@ -13,8 +13,8 @@ const alltask = asynchandler(async (req, res) => {
 
 const addtask = asynchandler(async (req, res) => {
   const { title, description } = req.body;
-  if (!title.trim()) {
-    throw new ApiError(400, "title both is required");
+  if (!title) {
+    throw new ApiError(400, "title is required");
   }
 
   const taskadded = await task.create({
