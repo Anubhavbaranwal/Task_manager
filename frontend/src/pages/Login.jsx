@@ -2,8 +2,10 @@ import axios from "axios";
 import React, { useState } from "react";
 import img from "../assets/20945760.jpg";
 import profile from "../assets/profile_4945750.png";
+import { useNavigation } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigation();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -23,6 +25,7 @@ const Login = () => {
           email: "",
           password: "",
         });
+        navigate("/");
         alert("Login Succefully");
       })
       .catch((error) => {

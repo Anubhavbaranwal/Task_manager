@@ -4,6 +4,7 @@ import Login from "./Login";
 import Task from "./Task";
 import Header from "../component/Header";
 import Addingtask from "../component/Addingtask";
+import { Outlet } from "react-router-dom";
 
 const Body = () => {
   return (
@@ -13,7 +14,8 @@ const Body = () => {
       <Header />
       <div className="justify-center flex ">
         {/* <Task /> */}
-        <Addingtask />
+        {/* <Addingtask /> */}
+        <Outlet />
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ export const verifyuser = asynchandler(async (req, _, next) => {
       .findById(decodedToken._id)
       .select("-password -refreshtoken");
     req.user = User;
+    console.log("checked");
     next();
   } catch (error) {
     throw new ApiError(401, error?.message || "invalid access token");

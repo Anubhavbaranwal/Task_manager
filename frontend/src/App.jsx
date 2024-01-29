@@ -1,12 +1,34 @@
 import { useState } from "react";
 import Body from "./pages/Body";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Addingtask from "./component/Addingtask";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
-  const [count, setCount] = useState(0);
-
+  const approuter = createBrowserRouter([
+    {
+      path: "/",
+      element: <Body />,
+      children: [
+        {
+          path: "/",
+          element: <Addingtask />,
+        },
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/register",
+          element: <Register />,
+        },
+      ],
+    },
+  ]);
   return (
     <>
-      <Body />
+      <RouterProvider router={approuter} />
     </>
   );
 }

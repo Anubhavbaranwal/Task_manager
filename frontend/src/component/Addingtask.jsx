@@ -29,11 +29,12 @@ const Addingtask = () => {
     try {
       const response = await axios.post(
         "http://localhost:5643/api/v1/add",
-        formData,
+        data,
         {
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify(data),
         }
       );
 
