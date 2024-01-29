@@ -21,7 +21,7 @@ const Addingtask = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = qs.stringify({
+    const formData = JSON.stringify({
       title: data.title,
       description: data.description,
     });
@@ -32,7 +32,7 @@ const Addingtask = () => {
         formData,
         {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
           },
         }
       );
