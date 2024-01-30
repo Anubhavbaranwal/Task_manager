@@ -8,9 +8,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Card = () => {
   const [dataArray, setDataArray] = useState([]);
-  const dispatch = useDispatch();
-  const add = useSelector((store) => store?.task?.add);
-  const navigate = useNavigate();
   useEffect(() => {
     data();
   }, []);
@@ -25,21 +22,17 @@ const Card = () => {
         console.log(err);
       });
   };
-  const handleadd = () => {
-    return dispatch(addfunc());
-  };
+
   const deleteit = (id) => {
     try {
       const response = axios.delete(`/delete/${id}`);
       data();
     } catch (error) {
       console.error(error);
-      // Handle error (show an alert, log, etc.)
     }
   };
   return (
-    <div className={add ? "" : " backdrop-blur-md"}>
-      
+    <div>
       <div className="flex flex-wrap justify-center sm:justify-start w-full mt-4 ">
         {dataArray &&
           dataArray?.map((data) => {
@@ -65,12 +58,11 @@ const Card = () => {
               </div>
             );
           })}
-        <div
-          className=" border rounded-xl text-center border-black p-2 mx-4 w-56 h-64 flex flex-col justify-center"
-          onClick={handleadd}
-        >
-          Add Task
-        </div>
+        <Link to="/add">
+          <div className=" border rounded-xl text-center border-black p-2 mx-4 w-56 h-64 flex flex-col justify-center">
+            Add Task
+          </div>
+        </Link>
       </div>
     </div>
   );

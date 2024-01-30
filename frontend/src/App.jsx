@@ -34,6 +34,10 @@ function App() {
           path: "/update/:id",
           element: <Updatingtask />,
         },
+        {
+          path: "/add",
+          element: <Addingtask />,
+        },
       ],
     },
   ]);
