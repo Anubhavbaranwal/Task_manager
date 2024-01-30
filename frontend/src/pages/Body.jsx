@@ -12,7 +12,7 @@ const Body = () => {
       {/* <Register /> */}
       {/* <Login /> */}
       <Header />
-      <div className="justify-center flex ">
+      <div className="justify-center flex w-full">
         {/* <Task /> */}
         {/* <Addingtask /> */}
         <Outlet />

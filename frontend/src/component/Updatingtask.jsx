@@ -1,21 +1,18 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
-import qs from "qs";
-import Formtask from "./Formtask";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Addingtask = () => {
+const Updatingtask = ({ id }) => {
+  const navigate = useNavigate();
   const [data, setData] = useState({
     title: "",
     description: "",
   });
-  const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/add", data, {
+      const response = await axios.post(`/update/+${id}`, data, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -23,21 +20,16 @@ const Addingtask = () => {
       });
 
       console.log(response);
-      setData({
-        title: "",
-        description: "",
-      });
       navigate("/");
-      alert("Data added successfully");
+      alert("updated successfully");
     } catch (error) {
       console.error(error);
       // Handle error (show an alert, log, etc.)
     }
   };
-  const title = "Add Task";
   return (
     <Formtask
-      title={title}
+      title={Update}
       data={data}
       setData={setData}
       handleSubmit={handleSubmit}
@@ -45,4 +37,4 @@ const Addingtask = () => {
   );
 };
 
-export default Addingtask;
+export default Updatingtask;

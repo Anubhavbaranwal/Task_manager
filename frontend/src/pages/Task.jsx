@@ -20,7 +20,7 @@ const Task = () => {
     },
   ];
   return (
-    <div>
+    <div className="w-full">
       <h1 className="text-black text-4xl underline m-3 flex justify-center">
         Task
       </h1>
