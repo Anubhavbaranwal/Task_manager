@@ -2,18 +2,19 @@ import axios from "axios";
 import React, { useState } from "react";
 import img from "../assets/20945760.jpg";
 import profile from "../assets/profile_4945750.png";
-import { useNavigation } from "react-router-dom";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 const Login = () => {
-  const navigate = useNavigation();
+  const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
     password: "",
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
+    axios.defaults.withCredentials = true;
     await axios
-      .post("http://localhost:5643/api/v1/Login", data, {
+      .post("/Login", data, {
         headers: {
           "Content-Type": "application/json",
         },

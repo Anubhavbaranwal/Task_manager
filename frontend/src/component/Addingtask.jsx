@@ -20,7 +20,7 @@ const Addingtask = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const formData = JSON.stringify({
       title: data.title,
       description: data.description,
@@ -28,7 +28,7 @@ const Addingtask = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5643/api/v1/add",
+        "/add",
         data,
         {
           headers: {

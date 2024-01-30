@@ -1,4 +1,5 @@
 import React from "react";
+import Card from "../component/Card";
 
 const Task = () => {
   const dataArray = [
@@ -23,25 +24,9 @@ const Task = () => {
       <h1 className="text-black text-4xl underline m-3 flex justify-center">
         Task
       </h1>
-      <div className="w-1/3 border rounded-xl border-black p-2">
-        <h3>{dataArray[0].title}</h3>
-        <p>{dataArray[0].description}</p>
-        <div className=" gap-x-4">
-          <button className="m-2 bg-green-500 px-2 py-1 rounded-lg">
-            edit
-          </button>
-          <button className="m-2 px-2 py-1 rounded-lg bg-red-500">
-            delete
-          </button>
-        </div>
+      <div className="w-full flex justify-center">
+        <Card />
       </div>
-      {/* {
-        dataArray && dataArray.map((each)=>{
-           <div>
-             <h3></h3>
-           </div>
-        })
-       } */}
     </div>
   );
 };

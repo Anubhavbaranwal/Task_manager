@@ -5,6 +5,7 @@ import { asynchandler } from "../utils/asynchandler.js";
 
 export const verifyuser = asynchandler(async (req, _, next) => {
   try {
+    console.log(req.cookies);
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");

@@ -4,8 +4,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Addingtask from "./component/Addingtask";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import axios from "axios";
+import Task from "./pages/Task";
 
 function App() {
+  axios.defaults.baseURL = "http://localhost:5643/api/v1";
+  axios.defaults.withCredentials = true;
   const approuter = createBrowserRouter([
     {
       path: "/",
@@ -13,7 +17,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: <Addingtask />,
+          element: <Task />,
         },
         {
           path: "/login",

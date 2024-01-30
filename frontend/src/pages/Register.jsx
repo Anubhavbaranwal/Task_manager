@@ -19,7 +19,7 @@ const Register = () => {
   };
   const handlesubmit = async () => {
     await axios
-      .post("http://localhost:5643/api/v1/register", data, {
+      .post("/register", data, {
         headers: {
           "Content-Type": "application/json",
         },
