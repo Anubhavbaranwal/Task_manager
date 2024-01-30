@@ -34,7 +34,7 @@ const addtask = asynchandler(async (req, res) => {
 
 const deletedtask = asynchandler(async (req, res) => {
   const { taskid } = req.params;
-
+   console.log(taskid)
   if (!isValidObjectId(taskid)) {
     throw new ApiError(400, "task id not valid");
   }

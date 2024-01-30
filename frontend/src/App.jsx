@@ -6,6 +6,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import axios from "axios";
 import Task from "./pages/Task";
+import { Provider } from "react-redux";
+import store from "./Store/Store";
+import Updatingtask from "./component/Updatingtask";
 
 function App() {
   axios.defaults.baseURL = "http://localhost:5643/api/v1";
@@ -27,13 +30,17 @@ function App() {
           path: "/register",
           element: <Register />,
         },
+        {
+          path: "/update/:id",
+          element: <Updatingtask />,
+        },
       ],
     },
   ]);
   return (
-    <>
+    <Provider store={store}>
       <RouterProvider router={approuter} />
-    </>
+    </Provider>
   );
 }
 

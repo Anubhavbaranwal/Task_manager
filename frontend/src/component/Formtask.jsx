@@ -1,4 +1,7 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import store from "../Store/Store";
+import { addfunc } from "../Store/dataSlice";
 
 const Formtask = ({ title, data, setData, handleSubmit }) => {
   const handlechange = (e) => {
@@ -10,17 +13,27 @@ const Formtask = ({ title, data, setData, handleSubmit }) => {
       [name]: value,
     });
   };
+  const dispatch = useDispatch();
+  const add = useSelector((store) => store?.task?.add);
+  const handle = () => {
+    if (add == true) {
+      dispatch(addfunc());
+    }
+  };
   return (
-    <center className=" backdrop-blur-md ">
-      <div className="w-1/3  bg-white bg-opacity-50">
+    <center className="backdrop-blur-md -mt-36 -mr-10 min-h-screen w-screen">
+      <div className="w-1/3  bg-white bg-opacity-50 z-30 pt-28">
         <form
           action=""
           className="shadow-2xl py-10 px-4 rounded-xl z-30"
           onSubmit={handleSubmit}
         >
-          <h1 className="text-4xl justify-center flex my-5">{title}</h1>
+          <h3 className="flex justify-end" onClick={() => handle()}>
+            exit
+          </h3>
+          <h1 className="text-4xl justify-center flex ">{title}</h1>
           <div className="my-3 flex flex-col ">
-            <label htmlFor="title" className="text-2xl">
+            <label htmlFor="title" className="text-2xl justify-start flex">
               {" "}
               Title
             </label>
@@ -34,7 +47,7 @@ const Formtask = ({ title, data, setData, handleSubmit }) => {
             />
           </div>
           <div className="my-3 flex flex-col ">
-            <label htmlFor="decription" className="text-2xl">
+            <label htmlFor="decription" className="text-2xl justify-start flex">
               {" "}
               Description
             </label>
